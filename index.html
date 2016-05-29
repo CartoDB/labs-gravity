@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GLA gravity study</title>
+    <meta name=viewport content="width=device-width initial-scale=1">
+    <link href="http://cartodb.com/favicon.ico" rel="shortcut icon" />
+    <link rel="stylesheet" href="./themes/css/deep-insights.css" />
+    <script src="./scripts/deep-insights.uncompressed.js"></script>
+    <script src="./scripts/gla_vis.js"></script>
+    <script src="./scripts/gla.js"></script>
+    <style type="text/css">
+        html,
+        body {
+            position: relative;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Dashboard-canvas" id="dashboard"></div>
+
+    <div id='mywidget'>
+    <div class="CDB-Widget CDB-Widget--light">
+        <div class="CDB-Loader"></div>
+        <div class="CDB-Widget-error is-hidden">
+            <button class="CDB-Widget-button CDB-Widget-errorButton js-refresh"> <span class="CDB-Widget-textSmall CDB-Widget-textSmall--bold">REFRESH</span> </button>
+        </div>
+        <div class="CDB-Widget-body">
+            <div class="CDB-Widget-header js-header">
+                <div class="CDB-Widget-title CDB-Widget-contentSpaced">
+                    <h3 class="CDB-Text CDB-Size-large u-ellipsis js-title"> Select the mall</h3>
+                </div>
+            </div>
+            <div class="CDB-Widget-content">
+                 <select id="myselector" class="CDB-SelectFake CDB-Text"></select>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+</body>
+
+</html>
