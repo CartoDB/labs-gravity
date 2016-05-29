@@ -5,9 +5,9 @@
     window.myapp.dijson = {
         "id": "a4193e4e-25d5-11e6-9e21-0e787de82d45",
         "version": "3.0.0",
-        "title": "Untitled Map 2",
+        "title": "GLA gravity study",
         "likes": 0,
-        "description": null,
+        "description": "Study of the power of attraction of the malls in the provice of Madrid based on their GLA (gross leasable area)",
         "scrollwheel": true,
         "legends": false,
         "map_provider": "leaflet",
