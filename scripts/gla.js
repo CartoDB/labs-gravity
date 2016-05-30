@@ -88,17 +88,17 @@
             });
 
             dashboard.createFormulaWidget({
-                "title": "Total pop.",
+                "title": "Total population",
                 "column": "pop",
                 "operation": "sum"
             }, myapp.layers[1]);
             dashboard.createFormulaWidget({
-                "title": "Patronizing pop.",
+                "title": "Potential customers",
                 "column": "hpop",
                 "operation": "sum"
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
-                "title": "Chance of patronizing",
+                "title": "Probability of patronage",
                 "column": "h",
                 "bins": 20,
             }, myapp.layers[1]);
