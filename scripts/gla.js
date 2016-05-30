@@ -135,7 +135,7 @@
                     cdb.$('.CDB-Loader').addClass('is-visible');
                     changestate(s, true);
                     changestate(i, false);
-                    myapp.Lmap.getNativeMap().removeLayer(myapp.marker);
+                    myapp.marker!= void 0 && myapp.Lmap.getNativeMap().removeLayer(myapp.marker);
                     myapp.layers[1].set('sql', oldquery);
                     myapp.layers[2].set('cartocss', oldcss);
                     setTimeout(function () {
