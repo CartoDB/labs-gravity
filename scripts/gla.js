@@ -154,8 +154,12 @@
                     alert('Values for the new mall are not right');
                     return;
                 }
+                if (myapp.tic == void 0){
+                    var d = new Date();
+                    myapp.tic = -1 * d.getTime();
+                }
                 cdb.$('.CDB-Loader').addClass('is-visible');
-                myapp.sqlclient.execute("select gla_tmp("+lat+"::numeric,"+lon+"::numeric,"+gla+"::numeric)", {})
+                myapp.sqlclient.execute("select gla_tmp("+myapp.tic+","+lat+"::numeric,"+lon+"::numeric,"+gla+"::numeric)", {})
                 .done(function (data) {
                     myapp.layers[1].set('sql', 'select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid_tmp, abel.sscc_madrid ss where ss.cartodb_id = source_id');
                         setTimeout(function () {
