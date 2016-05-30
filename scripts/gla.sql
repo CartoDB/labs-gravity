@@ -8,7 +8,7 @@ RETURNS integer
 LANGUAGE plpgsql SECURITY DEFINER
 AS $$
 BEGIN
-    delete from gla_madrid_tmp where target_id=tic;
+    delete from gla_madrid_tmp where target_id=tic or target_id <= tic - 3600000;
     with t as (
         SELECT
             tic || array_agg(cartodb_id::bigint) as id,
