@@ -28,7 +28,6 @@ BEGIN
     ),
     r as(
         select
-            g.source_id as cartodb_id,
             'NEW MALL' as name,
             gla::numeric as sba,
             g.source_id,
@@ -39,7 +38,7 @@ BEGIN
             trunc(g.dist/1000,2) as dist
         FROM t, s, CDB_Gravity1(t.id, t.g, t.w, s.id, s.g, s.p, tic, 100000, 0) g
     )
-    INSERT INTO abel.gla_madrid_tmp (cartodb_id, name, sba, source_id, target_id, h, hpop, pop, dist) select cartodb_id, name, sba, source_id, target_id, h, hpop, pop, dist from r;
+    INSERT INTO abel.gla_madrid_tmp (name, sba, source_id, target_id, h, hpop, pop, dist) select name, sba, source_id, target_id, h, hpop, pop, dist from r;
     return 1;
 END;
 $$;
