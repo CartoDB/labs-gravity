@@ -11,10 +11,10 @@
         "scrollwheel": true,
         "legends": false,
         "map_provider": "leaflet",
-   /*     "bounds": [
-        [39.70296052957233, -5.6744384765625],
-        [41.18278832811288, -1.2634277343749998]
-    ],*/
+        /*     "bounds": [
+             [39.70296052957233, -5.6744384765625],
+             [41.18278832811288, -1.2634277343749998]
+         ],*/
         "center": "[40.44694705960048, -3.46893310546875]",
         "zoom": 10,
         "updated_at": "2016-05-29T19:52:30+00:00",
@@ -127,18 +127,27 @@
                         "visible": true,
                         "options": {
                             "layer_name": "gla_madrid",
-                            "cartocss": "#layer {\npolygon-opacity: 0.7;\nline-width: 0.2;\nline-color: #FFFFFF;\nline-opacity: 1;\npolygon-fill: ramp([h], cartocolor(Sunset2, 7));\n}",
+                            "cartocss": "#layer {\npolygon-opacity: 0.7;\nline-width: 0;\nline-color: #FFFFFF;\nline-opacity: 1;\npolygon-fill: ramp([h], cartocolor(Sunset2, 7));\n}",
                             "cartocss_version": "2.1.1",
                             "interactivity": null,
-                            "sql": "select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid, abel.sscc_madrid ss\nwhere ss.cartodb_id = source_id and target_id=71"
+                            //"source": "a0"
+                            "sql": "select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid, abel.sscc_madrid ss where ss.cartodb_id = source_id and target_id=71"
                         }
                 }, {
                         "id": "ed706bf5-6c2a-4fcd-94d6-75345c6c8bc7",
                         "type": "CartoDB",
                         "infowindow": {
-                            "fields": [],
-                            "template_name": "table/views/infowindow_light",
-                            "template": "<div class=\"CDB-infowindow CDB-infowindow--light js-infowindow\">\n  <div class=\"CDB-infowindow-container\">\n    <div class=\"CDB-infowindow-bg\">\n      <div class=\"CDB-infowindow-inner\">\n        {{#loading}}\n          <div class=\"CDB-Loader js-loader is-visible\"></div>\n        {{/loading}}\n        <ul class=\"CDB-infowindow-list js-content\">\n          {{#content.fields}}\n          <li class=\"CDB-infowindow-listItem\">\n            {{#title}}<h5 class=\"CDB-infowindow-subtitle\">{{title}}</h5>{{/title}}\n            {{#value}}<h4 class=\"CDB-infowindow-title\">{{{ value }}}</h4>{{/value}}\n            {{^value}}<h4 class=\"CDB-infowindow-title\">null</h4>{{/value}}\n          </li>\n          {{/content.fields}}\n        </ul>\n      </div>\n    </div>\n    <div class=\"CDB-hook\">\n      <div class=\"CDB-hook-inner\"></div>\n    </div>\n  </div>\n</div>\n",
+                            "fields": [{
+                                "name": "name",
+                                "title": false,
+                                "position": null
+                        }, {
+                                "name": "sba2",
+                                "title": false,
+                                "position": null
+                        }],
+                            "template_name": "infowindow_light",
+                            "template": "<div class=\"CDB-infowindow CDB-infowindow--light js-infowindow\">\n"+/*'<i class="CDB-IconFont CDB-IconFont-close Size-large" style="position: relative;color: red;top: 10px;right:-205px;cursor:pointer;"></i>'+*/"<div class=\"CDB-infowindow-container\">\n    <div class=\"CDB-infowindow-bg\">\n      <div class=\"CDB-infowindow-inner\">\n        {{#loading}}\n          <div class=\"CDB-Loader js-loader is-visible\"></div>\n        {{/loading}}\n        <ul class=\"CDB-infowindow-list js-content\">\n          {{#content.fields}}\n          <li class=\"CDB-infowindow-listItem\">\n            {{#title}}<h5 class=\"CDB-infowindow-subtitle\">{{title}}</h5>{{/title}}\n            {{#value}}<h4 class=\"CDB-infowindow-title\">{{{ value }}}</h4>{{/value}}\n            {{^value}}<h4 class=\"CDB-infowindow-title\">null</h4>{{/value}}\n          </li>\n          {{/content.fields}}\n        </ul>\n      </div>\n    </div>\n    <div class=\"CDB-hook\">\n      <div class=\"CDB-hook-inner\"></div>\n    </div>\n  </div>\n</div>\n",
                             "alternative_names": {},
                             "width": 226,
                             "maxHeight": 180
@@ -184,7 +193,7 @@
                             "cartocss": "#centros_comerciales_de_madrid{\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 1;\n  marker-line-opacity: 1;\n  marker-placement: point;\n  marker-multi-policy: largest;\n  marker-type: ellipse;\n  marker-fill: ramp([sba], cartocolor(Teal2, 7));\n  marker-allow-overlap: true;\n  marker-clip: false;\nmarker-width: 10;[cartodb_id=71]{marker-width: 20;}}",
                             "cartocss_version": "2.1.1",
                             "interactivity": "cartodb_id",
-                            "sql": "SELECT \n* \nFROM abel.centros_comerciales_de_madrid\nwhere not no_cc\norder by sba desc"
+                            "sql": "SELECT *, sba ||'m²' as sba2 FROM abel.centros_comerciales_de_madrid where not no_cc order by sba desc"
                         }
                 }]
                 },
@@ -255,7 +264,16 @@
             "fullname": "abel",
             "avatar_url": "http://s3.amazonaws.com/com.cartodb.users-assets.production/production/abel/assets/20160318095129abel.c52ddb5d.jpg"
         },
-        "analyses": [],
+        "analyses": [{
+            "id": "a0",
+            "type": "source",
+            "params": {
+                "query": "select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid, abel.sscc_madrid ss where ss.cartodb_id = source_id and target_id=71"
+            },
+            "options": {
+                "table_name": "gla_madrid"
+            }
+    }],
         "vector": false
     }
 
