@@ -5,42 +5,82 @@
     window.onload = function () {
 
         var // diJSON = 'https://team.cartodb.com/u/abel/api/v3/viz/a4193e4e-25d5-11e6-9e21-0e787de82d45/viz.json',
-            username = window.myapp.dijson.datasource.user_name,//username = diJSON.match(/\/u\/(.+)\/api\/v\d\/|:\/\/(.+)\.cartodb\.com\/api/i)[1],
+            username = window.myapp.dijson.datasource.user_name, //username = diJSON.match(/\/u\/(.+)\/api\/v\d\/|:\/\/(.+)\.cartodb\.com\/api/i)[1],
             myapp = window.myapp,
-            options='',
-            mywidget = document.querySelector('#mywidget');
+            options = '',
+            mywidget = document.querySelector('#mywidget'),
+            changestate = function (el, state) {
+                el.prop('disabled', !state);
+                if (state) {
+                    el.removeClass('is-disabled');
+                } else {
+                    el.addClass('is-disabled');
+                }
+            },
+            oldquery, oldcss,
+            newmall = function () {
+                var mymap = myapp.Lmap.getNativeMap(),
+                    myicon = cdb.L.divIcon({
+                        className: 'newmall',
+                        iconSize: [20, 20],
+                    });
+                document.querySelector('.leaflet-map-pane').style.cursor = 'crosshair';
+                mymap.once('click', function (e) {
+                    var pos = e.latlng;
+                    myapp.marker = new cdb.L.marker(pos, {
+                        icon: myicon,
+                        draggable: 'true'
+                    });
+                    myapp.marker.on('dragend', function (event) {
+                        var m = event.target,
+                            position = m.getLatLng();
+                        m.setLatLng(position);
+                        document.querySelector('#lat').value = position.lat;
+                        document.querySelector('#lon').value = position.lng;
+                    });
+                    document.querySelector('#lat').value = pos.lat;
+                    document.querySelector('#lon').value = pos.lng;
+                    document.querySelector('.leaflet-map-pane').style.cursor = '';
+                    mymap.addLayer(myapp.marker);
+                });
+            }
 
-        myapp.sqlclient = new cartodb.SQL({ // SQL client
+        myapp.sqlclient = new cartodb.SQL({
             user: username,
             protocol: "https",
             sql_api_template: "https://{user}.cartodb.com:443"
         });
 
         myapp.sqlclient.execute("SELECT * FROM abel.centros_comerciales_de_madrid where not no_cc and sba >0 order by sba desc", {})
-             .done(function (data) {
-            var selector = document.querySelector('#myselector');
-            for (var i=0; i<data.rows.length;i++){
-                options += '<option value='+data.rows[i].cartodb_id+((i==0)?' selected':'')+'>'+data.rows[i].name+'</option>';
-            }
-            selector.innerHTML=options;
-            selector.onchange = function(){
-                myapp.layers[1].set('sql','select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid, abel.sscc_madrid ss where ss.cartodb_id = source_id and target_id='+this.value);
-                myapp.layers[2].set('cartocss','#centros_comerciales_de_madrid{   marker-fill-opacity: 0.9;   marker-line-color: #FFF;   marker-line-width: 1;   marker-line-opacity: 1;   marker-placement: point;   marker-multi-policy: largest;   marker-type: ellipse;   marker-fill: ramp([sba], cartocolor(Teal2, 7));   marker-allow-overlap: true;   marker-clip: false; marker-width: 10;[cartodb_id='+this.value+']{marker-width: 20;}}');
-                setTimeout(function(){myapp.widgetsdata.forEach(function(a){a.refresh();})}, 750);
-            }
-        })
+            .done(function (data) {
+                var selector = document.querySelector('#myselector');
+                for (var i = 0; i < data.rows.length; i++) {
+                    options += '<option value=' + data.rows[i].cartodb_id + ((i == 0) ? ' selected' : '') + '>' + data.rows[i].name + '</option>';
+                }
+                selector.innerHTML = options;
+                selector.onchange = function () {
+                    cdb.$('.CDB-Loader').addClass('is-visible');
+                    myapp.layers[2].set('cartocss', '#centros_comerciales_de_madrid{   marker-fill-opacity: 0.9;   marker-line-color: #FFF;   marker-line-width: 1;   marker-line-opacity: 1;   marker-placement: point;   marker-multi-policy: largest;   marker-type: ellipse;   marker-fill: ramp([sba], cartocolor(Teal2, 7));   marker-allow-overlap: true;   marker-clip: false; marker-width: 10;[cartodb_id=' + this.value + ']{marker-width: 20;}}');
+                    myapp.layers[1].set('sql', 'select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid, abel.sscc_madrid ss where ss.cartodb_id = source_id and target_id=' + this.value);
+                    setTimeout(function () {
+                        myapp.widgetsdata.forEach(function (a) {
+                            a.refresh();
+                            cdb.$('.CDB-Loader').removeClass('is-visible');
+                        })
+                    }, 750);
+                }
+            })
 
-        cartodb.deepInsights.createDashboard('#dashboard',  window.myapp.dijson, {
+        cartodb.deepInsights.createDashboard('#dashboard', window.myapp.dijson, {
             no_cdn: false
         }, function (err, dashboard) {
-            myapp.Lmap = dashboard.getMap(); // Leaflet map object
-            myapp.layers = myapp.Lmap.getLayers(); // CartoDB layers
-            // if the layer has an analysis node, its SQL is not exposed in the API
+            myapp.Lmap = dashboard.getMap();
+            myapp.layers = myapp.Lmap.getLayers();
             myapp.layers.map(function (a) {
                 var tmp;
-                if (a.attributes.sql != void 0) {
+                if (a.attributes.sql == void 0) {
                     tmp = dashboard._dashboard.vis._analysisCollection.models.filter(function (b) {
-                        return b.id == b.attributes.source;
+                        return b.id == a.attributes.source;
                     })[0];
                     if (tmp != void 0) a.attributes.sql = tmp.attributes.query;
                 }
@@ -73,19 +113,60 @@
                 "bins": 20,
             }, myapp.layers[1]);
 
-            myapp.widgetsdata = dashboard.getWidgets().map(function (a) { // Array of widgets’ data models
+            myapp.widgetsdata = dashboard.getWidgets().map(function (a) {
                 return a.dataviewModel
             });
-            myapp.widgets = dashboard.getWidgets(); // Array of widgets views
+            myapp.widgets = dashboard.getWidgets();
 
-            myapp.wcontainer = cdb.$('#' + vis.$el.context.id + ' .CDB-Widget-canvasInner').get(0); // Container
+            myapp.wcontainer = cdb.$('#' + vis.$el.context.id + ' .CDB-Widget-canvasInner').get(0);
             myapp.wcontainer.insertBefore(mywidget, myapp.wcontainer.children[0]);
 
+            cdb.$('input[type=radio]').on('click', function () {
+                var s = cdb.$('#myselector'),
+                    i = cdb.$('.CDB-InputText');
+                if (this.value == '02' && this.checked) {
+                    changestate(s, false);
+                    changestate(i, true);
+                    oldquery = myapp.layers[1].get('sql');
+                    oldcss = myapp.layers[2].get('cartocss');
+                    myapp.layers[2].set('cartocss', '#centros_comerciales_de_madrid{   marker-fill-opacity: 0.9;   marker-line-color: #FFF;   marker-line-width: 1;   marker-line-opacity: 1;   marker-placement: point;   marker-multi-policy: largest;   marker-type: ellipse;   marker-fill: ramp([sba], cartocolor(Teal2, 7));   marker-allow-overlap: true;   marker-clip: false; marker-width: 10;}');
+                    newmall();
+                } else {
+                    cdb.$('.CDB-Loader').addClass('is-visible');
+                    changestate(s, true);
+                    changestate(i, false);
+                    myapp.Lmap.getNativeMap().removeLayer(myapp.marker);
+                    myapp.layers[1].set('sql', oldquery);
+                    myapp.layers[2].set('cartocss', oldcss);
+                    setTimeout(function () {
+                        myapp.widgetsdata.forEach(function (a) {
+                            a.refresh();
+                            cdb.$('.CDB-Loader').removeClass('is-visible');
+                        })
+                    }, 750);
+                }
+            });
+            cdb.$('#calcnew').on('click', function () {
+                var lat = cdb.$('#lat').get(0).value,
+                    lon = cdb.$('#lon').get(0).value,
+                    gla = cdb.$('#gla').get(0).value;
+                if (isNaN(lat) || isNaN(lon) || isNaN(gla) || gla <= 0) {
+                    alert('Values for the new mall are not right');
+                    return;
+                }
+                cdb.$('.CDB-Loader').addClass('is-visible');
+                myapp.sqlclient.execute("select gla_tmp("+lat+"::numeric,"+lon+"::numeric,"+gla+"::numeric)", {})
+                .done(function (data) {
+                    myapp.layers[1].set('sql', 'select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid_tmp, abel.sscc_madrid ss where ss.cartodb_id = source_id');
+                        setTimeout(function () {
+                        myapp.widgetsdata.forEach(function (a) {
+                            a.refresh();
+                            cdb.$('.CDB-Loader').removeClass('is-visible');
+                        })
+                    }, 750);
+                });
 
-
+            });
         });
     }
-
-
-
 })();

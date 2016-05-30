@@ -1,0 +1,26 @@
+html,
+body {
+    position: relative;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: 'Open Sans';
+    overflow: hidden;
+}
+
+.CDB-SelectFake,
+.CDB-InputText{
+    flex-shrink: 99;
+}
+
+.u-iBlock:not(.CDB-Radio-face) {
+    display: flex !important;
+    align-items: center;
+    align-content: space-between;
+}
+
+.newmall{
+    border-radius:50%;
+    background: #0f4b51;;
+    border: solid 1px white;
+}
