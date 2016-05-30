@@ -4,8 +4,7 @@
 
     window.onload = function () {
 
-        var // diJSON = 'https://team.cartodb.com/u/abel/api/v3/viz/a4193e4e-25d5-11e6-9e21-0e787de82d45/viz.json',
-            username = window.myapp.dijson.datasource.user_name, //username = diJSON.match(/\/u\/(.+)\/api\/v\d\/|:\/\/(.+)\.cartodb\.com\/api/i)[1],
+        var username = window.myapp.dijson.datasource.user_name,
             myapp = window.myapp,
             options = '',
             mywidget = document.querySelector('#mywidget'),
