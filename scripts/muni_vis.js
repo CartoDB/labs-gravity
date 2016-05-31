@@ -171,7 +171,7 @@
                         "visible": true,
                         "options": {
                             "layer_name": "huff_13_2k_full",
-                            "cartocss": "#layer {\npolygon-fill: ramp([h], (#FFFFB2,#FED976,#FEB24C,#FD8D3C,#FC4E2A,#E31A1C,#B10026), 7, quantile);\npolygon-opacity: 0.7;\nline-width: 0.2;\nline-color: #FFFFFF;\nline-opacity: 1;\n}",
+                            "cartocss": "#layer {\npolygon-fill: ramp([h], cartocolor(Sunset2, 7));\npolygon-opacity: 0.7;\nline-width: 0.2;\nline-color: #FFFFFF;\nline-opacity: 1;\n}",
                             "cartocss_version": "2.1.1",
                             "interactivity": "cartodb_id",
                             //"source": "a0",
