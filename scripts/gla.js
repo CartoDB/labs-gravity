@@ -160,7 +160,7 @@
                 cdb.$('.CDB-Loader').addClass('is-visible');
                 myapp.sqlclient.execute("select gla_tmp("+myapp.tic+","+lat+"::numeric,"+lon+"::numeric,"+gla+"::numeric)", {})
                 .done(function (data) {
-                    myapp.layers[1].set('sql', 'select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid_tmp, abel.sscc_madrid ss where ss.cartodb_id = source_id');
+                    myapp.layers[1].set('sql', 'select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid_tmp, abel.sscc_madrid ss where ss.cartodb_id = source_id and target_id =' + myapp.tic);
                         setTimeout(function () {
                         myapp.widgetsdata.forEach(function (a) {
                             a.refresh();
