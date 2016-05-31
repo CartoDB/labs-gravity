@@ -17,31 +17,37 @@
                 }
             },
             oldquery, oldcss,
-            newmall = function () {
+            newmall = function (lat, lon) {
                 var mymap = myapp.Lmap.getNativeMap(),
-                    myicon = cdb.L.divIcon({
-                        className: 'newmall',
-                        iconSize: [20, 20],
+                    pos,
+                    addmarker = function (pos) {
+                        myapp.marker = new cdb.L.marker(pos, {
+                            icon: cdb.L.divIcon({
+                                className: 'newmall',
+                                iconSize: [20, 20],
+                                }),
+                            draggable: 'true'
+                        });
+                        myapp.marker.on('dragend', function (event) {
+                            var m = event.target,
+                                position = m.getLatLng();
+                            m.setLatLng(position);
+                            document.querySelector('#lat').value = position.lat;
+                            document.querySelector('#lon').value = position.lng;
+                        });
+                        document.querySelector('#lat').value = pos.lat;
+                        document.querySelector('#lon').value = pos.lng;
+                        mymap.addLayer(myapp.marker);
+                    };
+                if (lat =='' || isNaN(lat) || lon=='' || isNaN(lon)) {
+                    document.querySelector('.leaflet-map-pane').style.cursor = 'crosshair';
+                    mymap.once('click', function (e) {
+                        addmarker(e.latlng);
+                        document.querySelector('.leaflet-map-pane').style.cursor = '';
                     });
-                document.querySelector('.leaflet-map-pane').style.cursor = 'crosshair';
-                mymap.once('click', function (e) {
-                    var pos = e.latlng;
-                    myapp.marker = new cdb.L.marker(pos, {
-                        icon: myicon,
-                        draggable: 'true'
-                    });
-                    myapp.marker.on('dragend', function (event) {
-                        var m = event.target,
-                            position = m.getLatLng();
-                        m.setLatLng(position);
-                        document.querySelector('#lat').value = position.lat;
-                        document.querySelector('#lon').value = position.lng;
-                    });
-                    document.querySelector('#lat').value = pos.lat;
-                    document.querySelector('#lon').value = pos.lng;
-                    document.querySelector('.leaflet-map-pane').style.cursor = '';
-                    mymap.addLayer(myapp.marker);
-                });
+                } else {
+                    addmarker(cdb.L.latLng(lat, lon));
+                }
             },
             rep = 1;
 
@@ -130,13 +136,13 @@
                     oldquery = myapp.layers[1].get('sql');
                     oldcss = myapp.layers[2].get('cartocss');
                     myapp.layers[2].set('cartocss', '#centros_comerciales_de_madrid{   marker-fill-opacity: 0.9;   marker-line-color: #FFF;   marker-line-width: 1;   marker-line-opacity: 1;   marker-placement: point;   marker-multi-policy: largest;   marker-type: ellipse;   marker-fill: ramp([sba], cartocolor(Teal2, 7));   marker-allow-overlap: true;   marker-clip: false; marker-width: 10;}');
-                    newmall();
+                    newmall(cdb.$('#lat').get(0).value, cdb.$('#lon').get(0).value);
                 } else {
                     cdb.$('.CDB-Loader').addClass('is-visible');
                     rep = 1;
                     changestate(s, true);
                     changestate(i, false);
-                    myapp.marker!= void 0 && myapp.Lmap.getNativeMap().removeLayer(myapp.marker);
+                    myapp.marker != void 0 && myapp.Lmap.getNativeMap().removeLayer(myapp.marker);
                     myapp.layers[1].set('sql', oldquery);
                     myapp.layers[2].set('cartocss', oldcss);
                     setTimeout(function () {
@@ -155,22 +161,22 @@
                     alert('Values for the new mall are not right');
                     return;
                 }
-                if (myapp.tic == void 0){
+                if (myapp.tic == void 0) {
                     var d = new Date();
                     myapp.tic = -1 * d.getTime();
                 }
                 cdb.$('.CDB-Loader').addClass('is-visible');
-                myapp.sqlclient.execute("select gla_tmp("+myapp.tic+","+lat+"::numeric,"+lon+"::numeric,"+gla+"::numeric)", {})
-                .done(function (data) {
-                    myapp.layers[1].set('sql', 'select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid_tmp, abel.sscc_madrid ss where ss.cartodb_id = source_id and target_id =' + myapp.tic + new Array(rep).join(' '));
+                myapp.sqlclient.execute("select gla_tmp(" + myapp.tic + "," + lat + "::numeric," + lon + "::numeric," + gla + "::numeric)", {})
+                    .done(function (data) {
+                        myapp.layers[1].set('sql', 'select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid_tmp, abel.sscc_madrid ss where ss.cartodb_id = source_id and target_id =' + myapp.tic + new Array(rep).join(' '));
                         setTimeout(function () {
-                        myapp.widgetsdata.forEach(function (a) {
-                            a.refresh();
-                            rep += 1;
-                            cdb.$('.CDB-Loader').removeClass('is-visible');
-                        })
-                    }, 750);
-                });
+                            myapp.widgetsdata.forEach(function (a) {
+                                a.refresh();
+                                rep += 1;
+                                cdb.$('.CDB-Loader').removeClass('is-visible');
+                            })
+                        }, 750);
+                    });
 
             });
         });
