@@ -133,6 +133,7 @@
                     newmall();
                 } else {
                     cdb.$('.CDB-Loader').addClass('is-visible');
+                    rep = 1;
                     changestate(s, true);
                     changestate(i, false);
                     myapp.marker!= void 0 && myapp.Lmap.getNativeMap().removeLayer(myapp.marker);
