@@ -50,17 +50,17 @@
             sql_api_template: "https://{user}.cartodb.com:443"
         });
 
-        myapp.sqlclient.execute("SELECT * FROM abel.centros_comerciales_de_madrid where not no_cc and sba >0 order by sba desc", {})
+        myapp.sqlclient.execute("SELECT targ_name as name FROM abel.huff_13_2k_full group by targ_name order by targ_name asc", {})
             .done(function (data) {
                 var selector = document.querySelector('#myselector');
                 for (var i = 0; i < data.rows.length; i++) {
-                    options += '<option value=' + data.rows[i].cartodb_id + ((i == 0) ? ' selected' : '') + '>' + data.rows[i].name + '</option>';
+                    options += '<option value=' + data.rows[i].name + ((data.rows[i].name == 'Madrid') ? ' selected' : '') + '>' + data.rows[i].name + '</option>';
                 }
                 selector.innerHTML = options;
                 selector.onchange = function () {
+                    var myquery = "SELECT d.cartodb_id, d.dist_km as dist, d.h, d.sourc_name, d.targ_name, d.spob, d.spob_pat, d.tpob, h.the_geom, h.the_geom_webmercator, replace(h.idx_indus,',','')::numeric as idx_indus, replace(h.idx_com,',','')::numeric as idx_com, replace(h.idx_restauracion,',','')::numeric as idx_restauracion, replace(h.idx_turism,',','')::numeric as idx_turism, replace(h.idx_act_eco,',','')::numeric as idx_act_eco, h.paro, h.malls FROM     abel.huff_13_2k_full d left join     abel.spainmunicipalitiesfull h on h.ine=d.sourc_ine::integer where d.targ_name='"+this.value+"'";
                     cdb.$('.CDB-Loader').addClass('is-visible');
-                    myapp.layers[2].set('cartocss', '#centros_comerciales_de_madrid{   marker-fill-opacity: 0.9;   marker-line-color: #FFF;   marker-line-width: 1;   marker-line-opacity: 1;   marker-placement: point;   marker-multi-policy: largest;   marker-type: ellipse;   marker-fill: ramp([sba], cartocolor(Teal2, 7));   marker-allow-overlap: true;   marker-clip: false; marker-width: 10;[cartodb_id=' + this.value + ']{marker-width: 20;}}');
-                    myapp.layers[1].set('sql', 'select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid, abel.sscc_madrid ss where ss.cartodb_id = source_id and target_id=' + this.value);
+                    myapp.layers[1].set('sql', myquery);
                     setTimeout(function () {
                         myapp.widgetsdata.forEach(function (a) {
                             a.refresh();
@@ -86,14 +86,20 @@
                 return a;
             });
 
+
             dashboard.createFormulaWidget({
                 "title": "Total population",
-                "column": "pop",
+                "column": "spob",
                 "operation": "sum"
             }, myapp.layers[1]);
             dashboard.createFormulaWidget({
                 "title": "Potential customers",
-                "column": "hpop",
+                "column": "spob_pat",
+                "operation": "sum"
+            }, myapp.layers[1]);
+            dashboard.createFormulaWidget({
+                "title": "Malls",
+                "column": "malls",
                 "operation": "sum"
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
@@ -101,15 +107,41 @@
                 "column": "h",
                 "bins": 20
             }, myapp.layers[1]);
+            dashboard.createCategoryWidget({
+                "title": "Municipalities per potential customers",
+                "column": "sourc_name",
+                "aggregation_column": "spob_pat",
+                "aggregation": "sum",
+            }, myapp.layers[1]);
             dashboard.createHistogramWidget({
-                "title": "Distance to mall",
+                "title": "Distance to target",
                 "column": "dist",
                 "bins": 20
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
-                "title": "Avg age",
-                "column": "age_mode",
-                "bins": 20
+                "title": "Economic activity index",
+                "column": "idx_act_eco",
+                "bins": 10
+            }, myapp.layers[1]);
+            dashboard.createHistogramWidget({
+                "title": "Commercial index",
+                "column": "idx_com",
+                "bins": 10
+            }, myapp.layers[1]);
+            dashboard.createHistogramWidget({
+                "title": "Catering index",
+                "column": "idx_restauracion",
+                "bins": 10
+            }, myapp.layers[1]);
+            dashboard.createHistogramWidget({
+                "title": "Tourism index",
+                "column": "idx_turism",
+                "bins": 10
+            }, myapp.layers[1]);
+            dashboard.createHistogramWidget({
+                "title": "Industrual index",
+                "column": "idx_indus",
+                "bins": 10
             }, myapp.layers[1]);
 
             myapp.widgetsdata = dashboard.getWidgets().map(function (a) {
@@ -120,7 +152,7 @@
             myapp.wcontainer = cdb.$('#' + vis.$el.context.id + ' .CDB-Widget-canvasInner').get(0);
             myapp.wcontainer.insertBefore(mywidget, myapp.wcontainer.children[0]);
 
-            cdb.$('input[type=radio]').on('click', function () {
+            /*cdb.$('input[type=radio]').on('click', function () {
                 var s = cdb.$('#myselector'),
                     i = cdb.$('.CDB-InputText');
                 if (this.value == '02' && this.checked) {
@@ -145,6 +177,8 @@
                     }, 750);
                 }
             });
+            */
+            /*
             cdb.$('#calcnew').on('click', function () {
                 var lat = cdb.$('#lat').get(0).value,
                     lon = cdb.$('#lon').get(0).value,
@@ -170,6 +204,7 @@
                 });
 
             });
+            */
         });
     }
 })();
