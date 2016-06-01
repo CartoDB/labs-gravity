@@ -190,7 +190,7 @@
                         "visible": true,
                         "options": {
                             "layer_name": "centros_comerciales_de_madrid",
-                            "cartocss": "#centros_comerciales_de_madrid{\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 1;\n  marker-line-opacity: 1;\n  marker-placement: point;\n  marker-multi-policy: largest;\n  marker-type: ellipse;\n  marker-fill: ramp([sba], cartocolor(Teal2, 7));\n  marker-allow-overlap: true;\n  marker-clip: false;\nmarker-width: 10;[cartodb_id=71]{marker-width: 20;}}",
+                            "cartocss": "#centros_comerciales_de_madrid{\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 1;\n  marker-line-opacity: 1;\n  marker-placement: point;\n  marker-multi-policy: largest;\n  marker-type: ellipse;\n  marker-fill: ramp([sba], cartocolor(Teal2, 7));\n  marker-allow-overlap: true;\n  marker-clip: false;\nmarker-width: ramp([sba], 10, 20);[cartodb_id=71]{marker-line-color: red;\n  marker-line-width: 2;}}",
                             "cartocss_version": "2.1.1",
                             "interactivity": "cartodb_id",
                             "sql": "SELECT *, sba ||'m²' as sba2 FROM abel.centros_comerciales_de_madrid where not no_cc order by sba desc"
