@@ -21,6 +21,6 @@ body {
 
 .newmall{
     border-radius:50%;
-    background: #0f4b51;;
-    border: solid 1px white;
+    background: white;
+    border: solid 2px red;
 }
