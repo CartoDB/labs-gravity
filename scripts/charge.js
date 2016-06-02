@@ -131,6 +131,9 @@
                 myapp.widgets.forEach(function (w, i) {
                     if (w.attributes.title != 'Charging stations') w.remove();
                 })
+                myapp.widgets.forEach(function (w, i) {
+                    if (w.attributes.title != 'Charging stations') w.remove();
+                })
 
                 if (isNaN(lat) || isNaN(lon) || lat == '' || lon == '') {
                     alert('Values for the new station are not right');
@@ -187,6 +190,9 @@
 
             myapp.reset = function () {
                 myapp.widgets = dashboard.getWidgets();
+                myapp.widgets.forEach(function (w, i) {
+                    if (w.attributes.title != 'Charging stations') w.remove();
+                })
                 myapp.widgets.forEach(function (w, i) {
                     if (w.attributes.title != 'Charging stations') w.remove();
                 })
