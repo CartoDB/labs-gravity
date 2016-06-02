@@ -139,7 +139,7 @@
                 "bins": 10
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
-                "title": "Industrual index",
+                "title": "Industrial index",
                 "column": "idx_indus",
                 "bins": 10
             }, myapp.layers[1]);
