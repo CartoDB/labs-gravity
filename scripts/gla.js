@@ -179,7 +179,7 @@
                 var lat = cdb.$('#lat').get(0).value,
                     lon = cdb.$('#lon').get(0).value,
                     gla = cdb.$('#gla').get(0).value;
-                if (isNaN(lat) || isNaN(lon) || isNaN(gla) || gla <= 0) {
+                if (isNaN(lat) || isNaN(lon) || isNaN(gla) || gla <= 0 || lat == '' || lon == '' || gla =='') {
                     alert('Values for the new mall are not right');
                     return;
                 }

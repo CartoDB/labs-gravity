@@ -42,3 +42,47 @@ BEGIN
     return 1;
 END;
 $$;
+
+CREATE OR REPLACE FUNCTION ele_tmp(
+    tic bigint,
+    lat numeric,
+    lon numeric,
+    ele numeric
+)
+RETURNS integer
+LANGUAGE plpgsql SECURITY DEFINER
+AS $$
+BEGIN
+    delete from gla_madrid_tmp where target_id=tic or target_id >= tic + 3600000;
+    with t as (
+        SELECT
+            tic || array_agg(cartodb_id::bigint) as id,
+            CDB_LatLng(lat, lon) || array_agg(the_geom) as g,
+            ele || array_agg(coalesce(w,0)::numeric) as w
+        FROM
+            abel.charging_stations_spain
+    ),
+    s as (
+        SELECT
+            array_agg(cartodb_id::bigint) as id,
+            array_agg(center) as g,
+            array_agg(coalesce(cars, 0)::numeric) as p
+        FROM
+            abel.charging_stations_muni
+    ),
+    r as(
+        select
+            'NEW STATION' as name,
+            ele::numeric as sba,
+            g.source_id,
+            g.target_id,
+            trunc(g.h,2) as h,
+            round(g.hpop) as hpop,
+            100*round(g.hpop/g.h) as pop,
+            trunc(g.dist/1000,2) as dist
+        FROM t, s, CDB_Gravity1(t.id, t.g, t.w, s.id, s.g, s.p, tic, 100000, 0) g
+    )
+    INSERT INTO abel.gla_madrid_tmp (name, sba, source_id, target_id, h, hpop, pop, dist) select name, sba, source_id, target_id, h, hpop, pop, dist from r;
+    return 1;
+END;
+$$;
