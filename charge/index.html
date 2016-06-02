@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Charging stations study</title>
+    <meta name=viewport content="width=device-width initial-scale=1">
+    <link href="http://cartodb.com/favicon.ico" rel="shortcut icon" />
+    <link rel="stylesheet" href="../themes/css/deep-insights.css" />
+    <link rel="stylesheet" href="../themes/css/gla.css" />
+    <script src="../scripts/deep-insights.uncompressed.js"></script>
+    <script src="../scripts/charge_vis.js"></script>
+    <script src="../scripts/charge.js"></script>
+</head>
+
+<body>
+    <div class="Dashboard-canvas" id="dashboard"></div>
+
+    <div id='mywidget'>
+        <div class="CDB-Widget CDB-Widget--light">
+            <div class="CDB-Loader"></div>
+            <div class="CDB-Widget-error is-hidden">
+                <button class="CDB-Widget-button CDB-Widget-errorButton js-refresh"> <span class="CDB-Widget-textSmall CDB-Widget-textSmall--bold">REFRESH</span> </button>
+            </div>
+            <div class="CDB-Widget-body">
+                <div class="CDB-Widget-header js-header">
+                    <div class="CDB-Widget-title CDB-Widget-contentSpaced">
+                        <h3 class="CDB-Text CDB-Size-large u-ellipsis js-title">New charging station</h3>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+                <div class="CDB-Widget-content">
+                    <div class="u-iBlock CDB-Text CDB-Size-medium u-rSpace--xl">
+                        <input type="text" id="lat" placeholder="Latitude" class="CDB-InputText CDB-Text">&nbsp;
+                        <input type="text" id="lon" placeholder="Longitude" class="CDB-InputText CDB-Text">
+                        <br>
+                        <br>
+                    </div>
+                    <br>
+                    <div class="CDB-Fieldset">
+                        <p class="CDB-Legend CDB-Text is-semibold CDB-Size-medium u-rSpace--m">Location type</p>
+                        <select id="myselector" class="CDB-SelectFake CDB-Text">
+                            <option value=0.5>Airport</option>
+                            <option value=0.5>Camping</option>
+                            <option value=0.5>Car dealer</option>
+                            <option value=1>Garages</option>
+                            <option value=2 selected>Gas station </option>
+                            <option value=1>Ground level</option>
+                            <option value=0.5>Hotel</option>
+                            <option value=2>Mall</option>
+                            <option value=2>Parking</option>
+                            <option value=0>Private</option>
+                            <option value=1.5>Restaurant</option>
+                            <option value=1.5>Shop</option>
+                            <option value=0>Taxis only</option>
+                        </select>
+                        <br>
+                        <br>
+                    </div>
+                    <br>
+                    <div class="u-iBlock CDB-Text CDB-Size-medium u-rSpace--xl">
+                        <button class="CDB-Button CDB-Button--primary CDB-Button--small is-disabled" id="calc">
+                            <span class="CDB-Button-Text CDB-Text is-semibold CDB-Size-small">Calc trade area</span>
+                        </button>&nbsp;&nbsp;
+                        <button class="CDB-Button CDB-Button--primary CDB-Button--small is-disabled" id="reset">
+                            <span class="CDB-Button-Text CDB-Text is-semibold CDB-Size-small">reset</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
