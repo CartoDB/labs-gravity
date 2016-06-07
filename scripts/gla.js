@@ -128,17 +128,20 @@
             dashboard.createHistogramWidget({
                 "title": "Probability of patronage",
                 "column": "h",
-                "bins": 20
+                "bins": 20,
+                "normalized": true
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
                 "title": "Distance to mall",
                 "column": "dist",
-                "bins": 20
+                "bins": 20,
+                "normalized": true
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
                 "title": "Avg age",
                 "column": "age_mode",
-                "bins": 20
+                "bins": 20,
+                "normalized": true
             }, myapp.layers[1]);
 
             myapp.widgetsdata = dashboard.getWidgets().map(function (a) {

@@ -163,12 +163,14 @@
                             dashboard.createHistogramWidget({
                                 "title": "Probability of patronage",
                                 "column": "cars",
-                                "bins": 20
+                                "bins": 20,
+                                "normalized": true
                             }, myapp.layers[1]);
                             dashboard.createHistogramWidget({
                                 "title": "Distance to charging station",
                                 "column": "dist",
-                                "bins": 20
+                                "bins": 20,
+                                "normalized": true
                             }, myapp.layers[1]);
                             dashboard.createCategoryWidget({
                                 "title": "Brand",
@@ -204,17 +206,20 @@
                 dashboard.createHistogramWidget({
                     "title": "Population per municipality",
                     "column": "pop",
-                    "bins": 20
+                    "bins": 20,
+                    "normalized": true
                 }, myapp.layers[1]);
                 dashboard.createHistogramWidget({
                     "title": "Cars per municipality",
                     "column": "cars",
-                    "bins": 20
+                    "bins": 20,
+                    "normalized": true
                 }, myapp.layers[1]);
                 dashboard.createHistogramWidget({
                     "title": "Bikes per municipality",
                     "column": "bikes",
-                    "bins": 20
+                    "bins": 20,
+                    "normalized": true
                 }, myapp.layers[1]);
                 dashboard.createCategoryWidget({
                     "title": "Brand",
