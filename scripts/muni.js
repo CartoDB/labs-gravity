@@ -105,7 +105,8 @@
             dashboard.createHistogramWidget({
                 "title": "Probability of patronage",
                 "column": "h",
-                "bins": 20
+                "bins": 20,
+                "normalized": true
             }, myapp.layers[1]);
             dashboard.createCategoryWidget({
                 "title": "Municipalities per potential customers",
@@ -116,32 +117,38 @@
             dashboard.createHistogramWidget({
                 "title": "Distance to target",
                 "column": "dist",
-                "bins": 20
+                "bins": 20,
+                "normalized": true
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
                 "title": "Economic activity index",
                 "column": "idx_act_eco",
-                "bins": 10
+                "bins": 10,
+                "normalized": true
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
                 "title": "Commercial index",
                 "column": "idx_com",
-                "bins": 10
+                "bins": 10,
+                "normalized": true
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
                 "title": "Catering index",
                 "column": "idx_restauracion",
-                "bins": 10
+                "bins": 10,
+                "normalized": true
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
                 "title": "Tourism index",
                 "column": "idx_turism",
-                "bins": 10
+                "bins": 10,
+                "normalized": true
             }, myapp.layers[1]);
             dashboard.createHistogramWidget({
                 "title": "Industrial index",
                 "column": "idx_indus",
-                "bins": 10
+                "bins": 10,
+                "normalized": true
             }, myapp.layers[1]);
 
             myapp.widgetsdata = dashboard.getWidgets().map(function (a) {
