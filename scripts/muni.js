@@ -54,7 +54,7 @@
             .done(function (data) {
                 var selector = document.querySelector('#myselector');
                 for (var i = 0; i < data.rows.length; i++) {
-                    options += '<option value=' + data.rows[i].name + ((data.rows[i].name == 'Madrid') ? ' selected' : '') + '>' + data.rows[i].name + '</option>';
+                    options += '<option value=' + data.rows[i].name + ((data.rows[i].name == 'Barcelona') ? ' selected' : '') + '>' + data.rows[i].name + '</option>';
                 }
                 selector.innerHTML = options;
                 selector.onchange = function () {
