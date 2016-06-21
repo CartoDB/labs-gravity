@@ -258,7 +258,7 @@
         },
         "user": {
             "fullname": "abel",
-            "avatar_url": "http://s3.amazonaws.com/com.cartodb.users-assets.production/production/abel/assets/20160318095129abel.c52ddb5d.jpg"
+            "avatar_url": "https://s3.amazonaws.com/com.cartodb.users-assets.production/production/abel/assets/20160318095129abel.c52ddb5d.jpg"
         },
         "analyses": [/*{
             "id": "a0",
