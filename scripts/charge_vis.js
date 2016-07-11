@@ -127,7 +127,7 @@
                     "visible": true,
                     "options": {
                         "layer_name": "charging_stations_muni",
-                        "cartocss": "#layer {\n  polygon-fill: ramp([cars], cartocolor(Sunset2,7));\n  polygon-opacity: 0.7;\n}",
+                        "cartocss": "#layer {\n  polygon-fill: ramp([cars], cartocolor(Sunset,7));\n  polygon-opacity: 0.7;\n}",
                         "cartocss_version": "2.1.1",
                         "interactivity": "cartodb_id",
                         //"source": "a0",
