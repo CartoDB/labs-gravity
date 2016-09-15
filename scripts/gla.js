@@ -88,7 +88,7 @@
                 selector.innerHTML = options;
                 selector.onchange = function () {
                     cdb.$('.CDB-Loader').addClass('is-visible');
-                    myapp.layers[2].set('cartocss', "#centros_comerciales_de_madrid{\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 1;\n  marker-line-opacity: 1;\n  marker-placement: point;\n  marker-multi-policy: largest;\n  marker-type: ellipse;\n  marker-fill: ramp([sba], cartocolor(Teal2, 7));\n  marker-allow-overlap: true;\n  marker-clip: false;\nmarker-width: ramp([sba], 10, 20);[cartodb_id=" + this.value + "]{marker-line-color: red;\n  marker-line-width: 2;}}");
+                    myapp.layers[2].set('cartocss', "#centros_comerciales_de_madrid{\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 1;\n  marker-line-opacity: 1;\n  marker-placement: point;\n  marker-multi-policy: largest;\n  marker-type: ellipse;\n  marker-fill: ramp([sba], cartocolor(Teal, 7));\n  marker-allow-overlap: true;\n  marker-clip: false;\nmarker-width: ramp([sba], 10, 20);[cartodb_id=" + this.value + "]{marker-line-color: red;\n  marker-line-width: 2;}}");
                     myapp.layers[1].set('sql', 'select dist, h, hpop, name, pop, sba, ss.the_geom, ss.the_geom_webmercator, ss.age_mode from abel.gla_madrid, abel.sscc_madrid ss where ss.cartodb_id = source_id and target_id=' + this.value);
                     setTimeout(function () {
                         myapp.widgetsdata.forEach(function (a) {
@@ -160,7 +160,7 @@
                     changestate(i, true);
                     oldquery = myapp.layers[1].get('sql');
                     oldcss = myapp.layers[2].get('cartocss');
-                    myapp.layers[2].set('cartocss', "#centros_comerciales_de_madrid{\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 1;\n  marker-line-opacity: 1;\n  marker-placement: point;\n  marker-multi-policy: largest;\n  marker-type: ellipse;\n  marker-fill: ramp([sba], cartocolor(Teal2, 7));\n  marker-allow-overlap: true;\n  marker-clip: false;\nmarker-width: ramp([sba], 10, 20);\n}")
+                    myapp.layers[2].set('cartocss', "#centros_comerciales_de_madrid{\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 1;\n  marker-line-opacity: 1;\n  marker-placement: point;\n  marker-multi-policy: largest;\n  marker-type: ellipse;\n  marker-fill: ramp([sba], cartocolor(Teal, 7));\n  marker-allow-overlap: true;\n  marker-clip: false;\nmarker-width: ramp([sba], 10, 20);\n}")
                     newmall(cdb.$('#lat').get(0).value, cdb.$('#lon').get(0).value);
                 } else {
                     cdb.$('.CDB-Loader').addClass('is-visible');
