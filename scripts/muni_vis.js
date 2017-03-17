@@ -175,7 +175,7 @@
                             "cartocss_version": "2.1.1",
                             "interactivity": "cartodb_id",
                             //"source": "a0",
-                            "sql": "SELECT d.cartodb_id, d.dist_km as dist, d.h, d.sourc_name, d.targ_name, d.spob, d.spob_pat, d.tpob, h.the_geom, h.the_geom_webmercator, h.idx_indus::numeric as idx_indus, h.idx_com, h.idx_restauracion, h.idx_turism, h.idx_act_eco, h.paro, h.malls FROM     abel.huff_13_2k_full d left join     abel.spainmunicipalitiesfull h on h.ine=d.sourc_ine::integer where d.targ_name='Barcelona'"
+                            "sql": "SELECT d.cartodb_id, d.dist_km as dist, d.h, d.sourc_name, d.targ_name, d.spob, d.spob_pat, d.tpob, h.the_geom, h.the_geom_webmercator, replace(h.idx_indus,',','')::numeric as idx_indus, h.idx_com, h.idx_restauracion, h.idx_turism, h.idx_act_eco, h.paro, h.malls FROM     abel.huff_13_2k_full d left join     abel.spainmunicipalitiesfull h on h.ine=d.sourc_ine::integer where d.targ_name='Barcelona'"
                         }
                 }]
                 },
